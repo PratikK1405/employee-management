@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>Employee Management</header>
+    
+    <div class="form-container">
+        <h2>Add Employee</h2>
+        <form id="addEmployeeForm" action="/add" method="post" onsubmit="return validateForm(this)">
+
+            <label for="name"></label>
+            <input type="text" id="name" name="name" placeholder="Name" requuired>
+
+            <label for="position"></label>
+            <input type="text" id="position" name="position" placeholder="Position" required>
+
+            <label for="salary"></label>
+            <input type="number" step="0.01" id="salary" name="salary" placeholder="Salary" required>
+
+            <label for="email_id"></label>
+            <input type="text" id="email_id" name="email_id" placeholder="Email Address" required>
+
+            <button type="submit">Add Employee</button>
+        </form>
+    </div>
+    
+    <div class="table-container">
+        <h2>Employees</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Salary</th>
+                <th>Email Id</th>
+                <th>Actions</th>
+            </tr>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee[0] }}</td>
+                <td>{{ employee[1] }}</td>
+                <td>{{ employee[2] }}</td>
+                <td>{{ employee[3] }}</td>
+                <td>{{ employee[4] }}</td>
+                <td class="actions">
+                    <button onclick="openUpdateModal('{{ employee[0] }}')">Update</button>
+                    <button onclick="openDeleteModal('{{ employee[0] }}')">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+    <!-- Update Modal -->
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('updateModal')">&times;</span>
+            <h2>Update Employee</h2>
+            <form id="updateForm" action="" method="post" onsubmit="return validateForm(this)">
+                <label for="updateName">New Name:</label>
+                <input type="text" id="updateName" name="name" required>
+                <label for="updatePosition">New Position:</label>
+                <input type="text" id="updatePosition" name="position" required>
+                <label for="updateSalary">New Salary:</label>
+                <input type="number" step="0.01" id="updateSalary" name="salary" required>
+                <label for="updateemail">New Salary:</label>
+                <input type="text" id="updateemail" name="email_id" required>
+                <button type="submit">Update Employee</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Delete Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('deleteModal')">&times;</span>
+            <h2>Delete Confirmation</h2>
+            <p>Are you sure you want to delete this employee?</p>
+            <form id="deleteForm" action="" method="post">
+                <button type="submit">Yes, Delete</button>
+                <button type="button" onclick="closeModal('deleteModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+
+</body>
+</html>
